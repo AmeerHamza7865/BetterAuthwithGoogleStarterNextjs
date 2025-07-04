@@ -135,12 +135,12 @@ const [isLoading,setIsLoading]=useState(false)
                         </FormItem>
                       )}
                     />
-                      <a
-                        href="#"
+                      <Link
+                        href="/forget-password"
                         className="ml-auto text-sm underline-offset-4 hover:underline"
                       >
                         Forgot your password?
-                      </a>
+                      </Link>
                     </div>
                     
                   </div>

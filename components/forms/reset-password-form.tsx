@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 
-import { signIn, signUp, } from "@/server/user"
+import { signIn, } from "@/server/user"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -29,11 +29,10 @@ import { Loader2 } from "lucide-react"
 import { authClient } from "@/lib/auth-client"
 import Link from "next/link"
 const formSchema = z.object({
-  name: z.string().min(3),
   email: z.string().email(),
   password: z.string().min(8),
 })
-export function SignUpForm({
+export function ResetPasswordForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
@@ -45,7 +44,6 @@ const [isLoading,setIsLoading]=useState(false)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-    name: "",
       email: "",
       password: "",
     },
@@ -62,7 +60,7 @@ const [isLoading,setIsLoading]=useState(false)
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true)
-    const {success,message}=await signUp(values.email, values.password,values.name)
+    const {success,message}=await signIn(values.email, values.password)
     if(success){
     toast.success(message as string)
     router.push("/dashboard")
@@ -96,7 +94,7 @@ const [isLoading,setIsLoading]=useState(false)
                         fill="currentColor"
                       />
                     </svg>
-                    Signup with Google
+                    Login with Google
                   </Button>
                 </div>
                 <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
@@ -105,21 +103,6 @@ const [isLoading,setIsLoading]=useState(false)
                   </span>
                 </div>
                 <div className="grid gap-6">
-                    <div className="grid gap-3">
-                    <FormField
-                      control={form.control}
-                      name="name"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Full Name</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Ameer Hamza" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    </div>
                   <div className="grid gap-3">
                     <FormField
                       control={form.control}
@@ -136,7 +119,6 @@ const [isLoading,setIsLoading]=useState(false)
                       )}
                     />
                   </div>
-
                   <div className="grid gap-3">
                     <div className="flex  flex-col gap-2">
                     <FormField
@@ -168,8 +150,8 @@ const [isLoading,setIsLoading]=useState(false)
                 </div>
                 <div className="text-center text-sm">
                   Don&apos;t have an account?{" "}
-                  <Link href="/login" className="underline underline-offset-4">
-                    Login
+                  <Link href="/signup" className="underline underline-offset-4">
+                    Sign up
                   </Link>
                 </div>
               </div>
